@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigiServ — Smart Drop-Servicing Agency</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configure Tailwind theme with specified colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': '#2563EB', // The core blue
+                        'accent-orange': '#F97316', // The core orange accent
+                        'bg-light': '#F9FAFB', // Light gray background
+                        'text-dark': '#1F2937', // Dark gray text
+                        'card-bg': '#FFFFFF',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Global Styles */
+        body {
+    background-image: url('https://i.pinimg.com/736x/b1/e7/3b/b1e73b19b7abdb3cfbddbc119f509219.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* light overlay so content stays readable */
+.main-overlay {
+    background-color: rgba(255,255,255,0.88);
+    min-height: 100vh;
+}
+
+
+        /* Hero Background and Overlay (Using the user's requested image) */
+        .hero-background {
+            background-color: #2563EB;
+            background-image: url('https://i.pinimg.com/736x/e1/67/35/e16735edec10719c4cb37e98598ca857.jpg');
+            background-size: full;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.65); /* Dark overlay for text readability */
+            z-index: 10;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 20;
+        }
+
+        /* SPA Page Management */
+        .page {
+            display: none;
+            /* Fade in effect when active */
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Hover Effect for Cards and Buttons */
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2), 0 4px 6px -2px rgba(37, 99, 235, 0.05);
+        }
+
+        .nav-active {
+            color: #2563EB !important;
+            font-weight: 600;
+            border-bottom: 3px solid #F97316;
+            padding-bottom: 4px;
+        }
+
+        /* Mobile Optimization for SPA Navigation */
+        @media (max-width: 768px) {
+            .spa-nav {
+                overflow-x: scroll;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; /* Firefox */
+            }
+            .spa-nav::-webkit-scrollbar {
+                display: none; /* Chrome, Safari, Opera */
+            }
+            .nav-link {
+                flex-shrink: 0;
+            }
+        }
+
+        /* Slide-out Form Styling */
+        #contractSlide {
+            transition: right 0.4s ease-in-out;
+        }
+        @media (max-width: 768px) {
+            #contractSlide {
+                width: 100% !important;
+            }
+        }
+        /* Glow for DigiServ brand name */
+.glow-brand {
+    text-shadow:
+        0 0 6px rgba(255,255,255,0.6),
+        0 0 12px rgba(79,70,229,0.8),
+        0 0 20px rgba(37,99,235,0.9);
+}
+
+/* Softer glow for tagline */
+.glow-tagline {
+    text-shadow:
+        0 0 6px rgba(255,255,255,0.5),
+        0 0 10px rgba(255,255,255,0.4);
+}
+/* Header visible */
+.header-show {
+    transform: translateY(0);
+}
+
+/* Header hidden (moves up) */
+.header-hide {
+    transform: translateY(-100%);
+}
+/* Footer base */
+footer {
+    position: relative;
+    z-index: 10;
+}
+
+/* Social icons container */
+.footer-social a {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 20px;
+    color: #4b5563; /* gray-600 */
+    background: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+}
+
+/* Instagram */
+.footer-social a.instagram:hover {
+    color: #ffffff;
+    background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af);
+    box-shadow: 0 0 12px rgba(221, 42, 123, 0.6);
+}
+
+/* Facebook */
+.footer-social a.facebook:hover {
+    color: #ffffff;
+    background: #1877f2;
+    box-shadow: 0 0 100px rgba(24, 119, 242, 0.6);
+}
+
+/* LinkedIn */
+.footer-social a.linkedin:hover {
+    color: #ffffff;
+    background: #0a66c2;
+    box-shadow: 0 0 100px rgba(10, 102, 194, 0.6);
+}
+header img:hover {
+    filter: drop-shadow(0 0 6px rgba(255,255,255,0.7));
+}
+
+    </style>
+    <!-- Using Inter font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-bg-light text-text-dark font-sans">
+
+    <!-- Header Navigation (Sticky) -->
+   <header id="siteHeader"
+        class="sticky top-0 z-50 transition-transform duration-300 ease-in-out"
+
+
+
+style="background:linear-gradient(90deg,#00FFFF;">
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center gap-10">
+
+            <!-- Logo/Branding -->
+            <div class="flex items-center space-x-3">
+                <img src="https://i.pinimg.com/736x/ea/7b/3c/ea7b3c0363abc25b49e9358f929faddb.jpg"
+     class="w-20 h-20 rounded-full object-cover
+            border-2 border-white
+            shadow-[0_0_12px_rgba(255,255,255,0.8)]">
+<div class="text-xl font-extrabold text-white glow-brand ">
+  DigiServ
+</div>
+
+             <div class="hidden sm:block text-sm text-white glow-tagline">| Smart Drop-Servicing
+</div>
+
+               
+
+            </div>
+
+            <!-- Mobile Menu Button (Hamburger) -->
+            <button class="md:hidden p-2 rounded-lg text-primary-blue hover:bg-gray-100 transition duration-200" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+
+        <!-- Single Page App (SPA) Navigation (Always visible below logo on desktop) -->
+        <nav class="   bg-#00FFFF">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-6 md:space-x-10 py-3 spa-nav">
+               <nav class="hidden md:flex items-center gap-2 ml-auto">
+    <a href="#home" data-link
+       class="nav-link px-4 py-2 rounded-lg border border-transparent 
+       text-gray-300 hover:text-white hover:bg-white/10 
+       transition duration-200 font-medium active nav-active">
+       Home
+    </a>
+
+    <a href="#about" data-link
+       class="nav-link px-4 py-2 rounded-lg border border-transparent 
+       text-gray-300 hover:text-white hover:bg-white/10 
+       transition duration-200 font-medium">
+       About
+    </a>
+
+    <a href="#services" data-link
+       class="nav-link px-4 py-2 rounded-lg border border-transparent 
+       text-gray-300 hover:text-white hover:bg-white/10 
+       transition duration-200 font-medium">
+       Services
+    </a>
+
+    <a href="#portfolio" data-link
+       class="nav-link px-4 py-2 rounded-lg border border-transparent 
+       text-gray-300 hover:text-white hover:bg-white/10 
+       transition duration-200 font-medium">
+       Portfolio
+    </a>
+
+    <a href="#contact" data-link
+       class="nav-link px-4 py-2 rounded-lg border border-transparent 
+       text-gray-300 hover:text-white hover:bg-white/10 
+       transition duration-200 font-medium">
+       Contact
+    </a>
+</nav>
+
+
+            </div>
+        </nav>
+        
+        <!-- Mobile Menu (Dropdown - hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 border-t border-gray-100">
+            <nav class="hidden md:flex gap-6">
+
+            <!-- This menu is redundant due to SPA nav below, but kept for full mobile hamburger experience -->
+            <div class="flex flex-col space-y-2">
+                <a href="#home" class="p-2 text-gray-700 hover:bg-gray-50 rounded-lg">Home</a>
+                <a href="#about" class="p-2 text-gray-700 hover:bg-gray-50 rounded-lg">About</a>
+                <a href="#services" class="p-2 text-gray-700 hover:bg-gray-50 rounded-lg">Services</a>
+                <a href="#portfolio" class="p-2 text-gray-700 hover:bg-gray-50 rounded-lg">Portfolio</a>
+                <a href="#contact" class="p-2 text-gray-700 hover:bg-gray-50 rounded-lg">Contact</a>
+                <button onclick="toggleContractSlide()" class="mt-2 p-2 text-center bg-accent-orange text-white font-semibold rounded-lg hover:bg-orange-600">
+                    Get Free Quote
+                </button>
+            </div>
+        </div>
+    </header>
+
+ <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 pt-28">
+
+
+
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <!-- Hero Section with Background Image -->
+            <section class="hero-background rounded-2xl shadow-xl overflow-hidden mb-12">
+                <div class="hero-overlay"></div>
+                <div class="hero-content p-6 sm:p-12 text-white">
+                    <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center py-6">
+                        <!-- Left Content -->
+                        <div>
+                            <span class="text-sm font-semibold text-accent-orange uppercase tracking-wider mb-2 block">DigiServ Agency</span>
+                            <h1 class="text-4xl sm:text-5xl font-extrabold mb-4 leading-tight">
+                                <span class="text-accent-orange">Grow faster.</span> Launch smarter. We handle the work.
+                            </h1>
+                            <p class="text-lg text-gray-200 mb-6">
+                                We connect you with vetted freelancers who deliver creative and digital services — all managed end-to-end by DigiServ.
+                            </p>
+                            <a class="inline-block px-8 py-3 bg-accent-orange text-white font-bold rounded-xl shadow-lg hover:bg-orange-600 transition duration-300 transform hover:scale-[1.02]" href="#services">
+                                Get Started
+                            </a>
+                            <div class="flex flex-wrap gap-4 mt-6">
+                                <div class="bg-white/10 text-sm px-3 py-1 rounded-lg">20+ Projects Delivered</div>
+                                <div class="bg-white/10 text-sm px-3 py-1 rounded-lg">Vetted Freelancers</div>
+                                <div class="bg-white/10 text-sm px-3 py-1 rounded-lg">Quick Turnaround</div>
+                            </div>
+                        </div>
+
+                        <!-- Right Service Pills (Visual summary) -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg text-text-dark/80 hidden lg:block">
+                            <div class="font-bold text-lg mb-4 text-primary-blue">Popular Services</div>
+                            <div class="space-y-3">
+                                <div class="flex items-center p-3 rounded-lg bg-gray-50 border border-gray-100 shadow-sm">
+                                    <span class="text-accent-orange mr-3">🎨</span> Graphics Design — Logos, Banners, Social Content
+                                </div>
+                                <div class="flex items-center p-3 rounded-lg bg-gray-50 border border-gray-100 shadow-sm">
+                                    <span class="text-accent-orange mr-3">💻</span> Web UI/UX & Frontend Development
+                                </div>
+                                <div class="flex items-center p-3 rounded-lg bg-gray-50 border border-gray-100 shadow-sm">
+                                    <span class="text-accent-orange mr-3">🎬</span> Video Editing — Reels, Shorts, Ads
+                                </div>
+                                <div class="flex items-center p-3 rounded-lg bg-gray-50 border border-gray-100 shadow-sm">
+                                    <span class="text-accent-orange mr-3">📈</span> Digital Marketing — SEO & Social Ads
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Why TaskShift? Section -->
+            <section class="py-6">
+                <h2 class="text-3xl font-bold text-white mb-8 text-center">Why Choose DigiServ?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-card-bg p-6 rounded-xl shadow-md border-t-4 border-primary-blue transition duration-300 card-hover">
+                        <h3 class="text-xl font-bold text-primary-blue mb-2">End-to-End Delivery</h3>
+                        <p class="text-gray-600">We manage freelancers entirely, offering you a single point of contact and consistent, high-quality output.</p>
+                    </div>
+                    <div class="bg-card-bg p-6 rounded-xl shadow-md border-t-4 border-accent-orange transition duration-300 card-hover">
+                        <h3 class="text-xl font-bold text-primary-blue mb-2">Vetted Talent</h3>
+                        <p class="text-gray-600">Access only carefully selected professionals with proven real-world experience and reliability.</p>
+                    </div>
+                    <div class="bg-card-bg p-6 rounded-xl shadow-md border-t-4 border-primary-blue transition duration-300 card-hover">
+                        <h3 class="text-xl font-bold text-primary-blue mb-2">Transparent Pricing</h3>
+                        <p class="text-gray-600">Clear scopes, milestone-based billing, and zero hidden fees. Know exactly what you pay for.</p>
+                    </div>
+                    <div class="bg-card-bg p-6 rounded-xl shadow-md border-t-4 border-accent-orange transition duration-300 card-hover">
+                        <h3 class="text-xl font-bold text-primary-blue mb-2">Fast Turnarounds</h3>
+                        <p class="text-gray-600">Streamlined project management ensures efficient execution and quicker final delivery times.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ABOUT PAGE -->
+        <div id="about" class="page">
+            <section class="py-6">
+                <h2 class="text-3xl font-bold text-text-dark text-white mb-6">About DigiServ</h2>
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+
+                <div class="bg-card-bg p-8 rounded-xl shadow-lg lg:col-span-2">
+
+
+                        <p class=" text-lg text-gray-1000">
+                            DigiServ is a smart, modern drop-servicing agency designed to simplify how businesses access high-quality creative and digital services. We specialize in delivering premium solutions without burdening our clients with the complexity of sourcing, coordinating, or managing freelancers. From the very first project brief to the final delivery, DigiServ takes full ownership of the process—ensuring seamless execution, consistent quality, and on-time results.
+
+Our model is built around a carefully curated network of trusted professionals across design, development, marketing, and digital growth services. By combining expert talent with a streamlined internal workflow, we ensure every project is handled efficiently, transparently, and to the highest standards. Clients benefit from a single point of contact, clear communication, and structured project management—while we handle all backend coordination and quality control.
+
+At DigiServ, speed and reliability go hand in hand with creativity and performance. We focus not just on delivering visually appealing or technically sound work, but on solutions that drive measurable impact and long-term brand growth. Whether you are a startup seeking a strong digital presence or an established brand looking to scale faster, DigiServ provides a hassle-free, results-driven partnership that helps your business look sharper, perform better, and grow with confidence.      
+                        </p>
+                        <p class="mt-4 text-gray-500 text-sm">
+                            Founded in 2025, our mission is to simplify outsourcing for businesses, creators, and entrepreneurs worldwide.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-card-bg p-8 rounded-xl shadow-lg border-t-4 border-accent-orange">
+                        <h3 class="text-2xl font-bold text-primary-blue mb-4">Our Values</h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-center">
+                                <span class="text-accent-orange mr-2">✓</span> **Client-First:** Prioritising your goals and ROI.
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-accent-orange mr-2">✓</span> **Quality Focus:** Every professional is vetted and results-driven.
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-accent-orange mr-2">✓</span> **Reliability:** Clear timelines, regular updates, and full ownership.
+                            </li>
+<!-- Our Freelancers (Centered, Lower Section) -->
+<div class="mt-12 flex justify-center">
+    <div class="bg-card-bg p-8 rounded-xl shadow-lg w-full max-w-2xl text-center">
+        <h3 class="text-2xl font-bold text-primary-blue mb-6">
+            Our Freelancers
+        </h3>
+
+        <ul class="space-y-3 text-gray-700">
+            <li><strong>Hamza Khan</strong> — Video Editor</li>
+            <li><strong>Sweksha Jha</strong> — Graphics Designer & Video Editor</li>
+            <li><strong>Gaurav Funde</strong> — Digital Marketer</li>
+            <li><strong>Anand Mangule Gurjar</strong> — Web & App Developer</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- SERVICES PAGE -->
+        <div id="services" class="page">
+            <section class="py-6">
+                <h2 class="text-3xl font-bold text-white mb-6">Our Services — Solutions for Growth</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Service 1 -->
+                    <div class="bg-card-bg p-6 rounded-xl shadow-md border-t-4 border-primary-blue transition duration-300 card-hover">
+                        <h3 class="text-xl font-bold text-primary-blue mb-2">🎬 Video Editing</h3>
+                        <p class="text-gray-600">Reels, shorts, ads, motion graphics, color grading & professional storytelling for all platforms.</p>
+                    </div>
+                    <!-- Service 2 -->
+                    <div class="bg-card-bg p-6 rounded-xl shadow-md border-t-4 border-accent-orange transition duration-300 card-hover">
+                        <h3 class="text-xl font-bold text-primary-blue mb-2">🎨 Graphics Design</h3>
+                        <p class="text-gray-600">Logo, full brand kit, business cards, CVs, PPTs, banner ads, thumbnails, and LinkedIn corporate posts.</p>
+                    </div>
+                    <!-- Service 3 -->
+                    <div class="bg-card-bg p-6 rounded-xl shadow-md border-t-4 border-primary-blue transition duration-300 card-hover">
+                        <h3 class="text-xl font-bold text-primary-blue mb-2">📈 Digital Marketing</h3>
+                        <p class="text-gray-600">Conversion-focused social media advertising, SEO optimization, and content strategy for audience growth.</p>
+                    </div>
+                    <!-- Service 4 -->
+                    <div class="bg-card-bg p-6 rounded-xl shadow-md border-t-4 border-accent-orange transition duration-300 card-hover">
+                        <h3 class="text-xl font-bold text-primary-blue mb-2">💻 Web UI/UX & Frontend</h3>
+                        <p class="text-gray-600">Professional Figma design and fully responsive, performance-optimized frontend development.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works Section -->
+            <section class="py-8">
+                <h2 class="text-3xl font-bold text-white mb-6">Our Simple Process</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="p-4 rounded-xl text-center bg-white shadow-md border border-gray-100">
+                        <div class="text-4xl font-extrabold text-primary-blue mb-2">1.</div>
+                        <h4 class="font-semibold text-lg text-text-dark">Brief</h4>
+                        <p class="text-sm text-gray-500">Share your detailed requirements and vision.</p>
+                    </div>
+                    <div class="p-4 rounded-xl text-center bg-white shadow-md border border-gray-100">
+                        <div class="text-4xl font-extrabold text-accent-orange mb-2">2.</div>
+                        <h4 class="font-semibold text-lg text-text-dark">Plan</h4>
+                        <p class="text-sm text-gray-500">We provide a clear timeline, cost estimate, and scope of work.</p>
+                    </div>
+                    <div class="p-4 rounded-xl text-center bg-white shadow-md border border-gray-100">
+                        <div class="text-4xl font-extrabold text-primary-blue mb-2">3.</div>
+                        <h4 class="font-semibold text-lg text-text-dark">Delivery</h4>
+                        <p class="text-sm text-gray-500">We execute the project and share progress at key milestones.</p>
+                    </div>
+                    <div class="p-4 rounded-xl text-center bg-white shadow-md border border-gray-100">
+                        <div class="text-4xl font-extrabold text-accent-orange mb-2">4.</div>
+                        <h4 class="font-semibold text-lg text-text-dark">Support</h4>
+                        <p class="text-sm text-gray-500">Includes necessary edits and post-launch follow-up.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- PORTFOLIO PAGE -->
+        <div id="portfolio" class="page">
+            <section class="py-6">
+                <h2 class="text-3xl font-bold text-white mb-6">Our Work — Proven Results</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                    <!-- Video Editing -->
+                    <div class="bg-card-bg p-4 rounded-xl shadow-md transition duration-300 card-hover">
+                        <div class="h-40 overflow-hidden rounded-lg">
+                            <img src="https://i.pinimg.com/736x/b6/bc/4d/b6bc4d830b0e9efd3e01c4ef512f925c.jpg" alt="Video Editing" class="w-full h-full object-cover transform transition duration-500 hover:scale-105">
+                        </div>
+                        <h4 class="text-xl font-semibold text-primary-blue mt-4 mb-1">Video Editing</h4>
+                        <p class="text-gray-500 text-sm mb-3">Your story, our professional cut.</p>
+                        <a href="https://drive.google.com/drive/folders/1xGP7_p3I60tpv5i6QCOfTuuMoXd74W6R?usp=drive_link" target="_blank"
+                            class="inline-block px-4 py-2 text-xs font-semibold text-gray-700 rounded-full border border-gray-300 hover:bg-primary-blue hover:text-white transition duration-200">
+                            View Work →
+                        </a>
+                    </div>
+
+                    <!-- Graphics Design -->
+                    <div class="bg-card-bg p-4 rounded-xl shadow-md transition duration-300 card-hover">
+                        <div class="h-40 overflow-hidden rounded-lg">
+                            <img src="https://i.pinimg.com/736x/54/e5/e0/54e5e0d5e8de151872ed58d779fa2747.jpg" alt="Graphics Design" class="w-full h-full object-cover transform transition duration-500 hover:scale-105">
+                        </div>
+                        <h4 class="text-xl font-semibold text-primary-blue mt-4 mb-1">Graphics Design</h4>
+                        <p class="text-gray-500 text-sm mb-3">Brand identity for a major fintech client.</p>
+                        <a href="https://drive.google.com/drive/folders/1jfDTY0QJ1qdk3LVVI1yyaDa29Zy74uGO?usp=drive_link" target="_blank"
+                            class="inline-block px-4 py-2 text-xs font-semibold text-gray-700 rounded-full border border-gray-300 hover:bg-primary-blue hover:text-white transition duration-200">
+                            View Work →
+                        </a>
+                    </div>
+
+                    <!-- Digital Marketing -->
+                    <div class="bg-card-bg p-4 rounded-xl shadow-md transition duration-300 card-hover">
+                        <div class="h-40 overflow-hidden rounded-lg">
+                            <img src="https://i.pinimg.com/736x/2f/63/f0/2f63f0c0723fa14abb46b1132dec5a41.jpg" alt="Digital Marketing" class="w-full h-full object-cover transform transition duration-500 hover:scale-105">
+                        </div>
+                        <h4 class="text-xl font-semibold text-primary-blue mt-4 mb-1">Digital Marketing</h4>
+                        <p class="text-gray-500 text-sm mb-3">High-conversion paid media campaigns.</p>
+                        <a href="https://drive.google.com/drive/folders/1yd739DtLMN249zxp8fFbCB5dY6bHHshA?usp=drive_link" target="_blank"
+                            class="inline-block px-4 py-2 text-xs font-semibold text-gray-700 rounded-full border border-gray-300 hover:bg-primary-blue hover:text-white transition duration-200">
+                            View Work →
+                        </a>
+                    </div>
+
+                    <!-- Web UI/UX & Frontend -->
+                    <div class="bg-card-bg p-4 rounded-xl shadow-md transition duration-300 card-hover">
+                        <div class="h-40 overflow-hidden rounded-lg">
+                            <img src="https://i.pinimg.com/736x/1c/7a/b6/1c7ab680e7fb6d6058265a6c7d72c3ba.jpg" alt="Web UI/UX & Frontend" class="w-full h-full object-cover transform transition duration-500 hover:scale-105">
+                        </div>
+                        <h4 class="text-xl font-semibold text-primary-blue mt-4 mb-1">Web UI/UX & Frontend</h4>
+                        <p class="text-gray-500 text-sm mb-3">Exceptional design for delight and conversion.</p>
+                        <a href="https://drive.google.com/drive/folders/1CtijgmEl0Y4d2mf0A9K5BY08gUMchy4i?usp=drive_link" target="_blank"
+                            class="inline-block px-4 py-2 text-xs font-semibold text-gray-700 rounded-full border border-gray-300 hover:bg-primary-blue hover:text-white transition duration-200">
+                            View Work →
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- CONTACT PAGE -->
+        <div id="contact" class="page">
+            <section class="py-6">
+                <h2 class="text-3xl font-bold text-white mb-6">Let's Start Your Project</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Contact Details -->
+                    <div class="bg-card-bg p-8 rounded-xl shadow-lg border-l-4 border-accent-orange">
+                        <p class="text-lg text-gray-700 mb-6">Ready to transform your business? Contact us today. We guarantee a response within 1 hour during business hours.</p>
+
+                        <div class="space-y-4">
+                            <!-- Email -->
+                            <div class="flex items-center space-x-3">
+                                <span class="text-accent-orange">✉️</span>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-500">Email Inquiry:</div>
+                                    <div class="font-semibold text-primary-blue">enquirydigiserv@gmail.com</div>
+                                </div>
+                            </div>
+
+                            <!-- Phone (Only Number: 9832729066) -->
+                            <div class="flex items-center space-x-3">
+                                <span class="text-accent-orange">📞</span>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-500">Direct Line:</div>
+                                    <div class="font-semibold text-primary-blue">+91-9832729066</div>
+                                </div>
+                            </div>
+
+                            <!-- WhatsApp (Only Number: 9832729066) -->
+                            <a class="flex items-center space-x-3 p-3 rounded-lg bg-green-500 text-white font-semibold shadow-md hover:bg-green-600 transition duration-200" href="https://wa.me/919832729066" target="_blank" rel="noopener noreferrer">
+                                <span class="text-xl">💬</span>
+                                <span>Chat with us on WhatsApp</span>
+                            </a>
+                            
+                            <!-- Note: All secondary contact details removed per user request. -->
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="bg-card-bg p-8 rounded-xl shadow-lg border-r-4 border-primary-blue">
+                        <h3 class="text-xl font-bold text-primary-blue mb-4">Send Us a Direct Message</h3>
+                        <form id="contactForm" class="space-y-4">
+                            <input id="name" name="name" placeholder="Your Full Name" required 
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue"/>
+                            <input id="email" name="email" type="email" placeholder="Email Address" required 
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue"/>
+                            <textarea id="message" name="message" rows="5" placeholder="Message — include project type, budget, and deadline" required 
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue resize-y"></textarea>
+                            <button type="submit" 
+                                class="w-full p-3 bg-primary-blue text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200">
+                                Send Contract Details
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+      <footer class="mt-12 border-t border-gray-200 bg-white/80 backdrop-blur-md">
+    
+    <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-700">
+
+        <!-- Brand Info -->
+        <div>
+            <h3 class="text-xl font-bold text-primary-blue mb-3">DigiServ</h3>
+            <p>
+                Smart drop-servicing agency delivering premium creative and digital
+                solutions with vetted freelancers and fast turnaround.
+            </p>
+        </div>
+
+        <!-- Office Address -->
+        <div>
+            <h4 class="text-lg font-semibold mb-3">Office Address</h4>
+            <p>
+                DigiServ Agency <br>
+                Kolkata, West Bengal <br>
+                India – 700124
+            </p>
+        </div>
+
+        <!-- Social Media Links -->
+ <div class="flex items-center gap-4">
+
+ <!-- Social Media Logos -->
+    <div class="flex items-center gap-3 ml-3">
+
+        <a href="https://www.instagram.com/digi___serv?igsh=MXJiZDN1Z296czhsbg=="
+           target="_blank">
+            <img src="https://i.pinimg.com/736x/3c/0b/52/3c0b5296e29c391d50a7580b3e949a34.jpg"
+                 class="w-12 h-12 hover:scale-110 transition">
+        </a>
+
+        <a href="https://www.facebook.com/share/16xHX787uj/"
+           target="_blank">
+            <img src="https://i.pinimg.com/736x/7b/ed/39/7bed398644d61cae7c4dd853b558a1c9.jpg"
+                 class="w-12 h-12 hover:scale-110 transition">
+        </a>
+
+        <a href="https://www.linkedin.com/posts/digserv_hiring-freelanceopportunity-startupjourney-activity-7411468661107908608-FhqW"
+           target="_blank">
+            <img src="https://i.pinimg.com/736x/50/28/96/50289622484884883394461abb34ef1f.jpg"
+                 class="w-12 h-12 hover:scale-110 transition">
+        </a>
+
+    </div>
+</div>
+
+
+    <!-- Bottom Copyright -->
+    <div class="text-center text-xs text-gray-500 py-4 border-t border-gray-200">
+        © 2025 DigiServ Ltd. All rights reserved. Smart Drop-Servicing Agency.
+    </div>
+
+</footer>
+
+    <!-- Slide-out Enquiry Form (From Taskshift mobile.html) -->
+    <div id="contractSlide"
+        style="position:fixed;top:0;right:-460px;width:420px;height:100vh;background:#ffffff;box-shadow:-4px 0 16px rgba(0,0,0,0.2);padding:28px;z-index:9999;overflow-y:auto;border-left:4px solid #2563EB;color:#1F2937;">
+        
+        <h2 class="text-3xl font-bold text-primary-blue mb-2">Get a Free Quote</h2>
+        <p class="text-gray-600 mb-6">Fill out your details for a quick response (usually within 1 hour).</p>
+
+        <form id="slideContractForm" class="space-y-4">
+            <input placeholder="Your Name" id="cname" required
+                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue" />
+            <input type="email" placeholder="Your Email" id="cemail" required
+                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue" />
+            <textarea placeholder="Tell us about your project, budget, and deadline..." id="cmsg" rows="5" required
+                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue resize-y"></textarea>
+            <button type="submit"
+                class="w-full p-3 bg-accent-orange text-white font-semibold rounded-lg shadow-md hover:bg-orange-600 transition duration-200">
+                Submit Enquiry
+            </button>
+        </form>
+
+        <div class="flex gap-3 mt-4">
+            <button id="waBtn"
+                class="flex-1 p-3 rounded-lg bg-green-500 text-white font-semibold hover:bg-green-600 transition duration-200">
+                💬 Chat on WhatsApp
+            </button>
+            <button onclick="toggleContractSlide()"
+                class="p-3 rounded-lg bg-gray-100 text-primary-blue font-semibold border border-primary-blue hover:bg-gray-200 transition duration-200">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Enquiry FAB Button -->
+    <button onclick="toggleContractSlide()"
+        class="fixed bottom-6 right-6 p-4 rounded-full bg-primary-blue text-white font-semibold shadow-xl hover:bg-blue-700 transition duration-300 transform hover:scale-105 z-40">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+    </button>
+
+    <script>
+        /* ---- CONFIG ---- */
+        // Primary WhatsApp number consolidated to 9832729066
+        const WHATSAPP_NUMBER = '919832729066'; 
+        
+        // NOTE: Since this environment cannot handle dynamic backend submissions, 
+        // the Formspree and Google Sheets logic is kept but will fail without a live setup.
+        // We rely on the WhatsApp fallback for demonstration.
+        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mgownrzq';
+        const GOOGLE_SHEETS_WEBHOOK = ''; 
+
+
+        /* ---- SPA Routing ---- */
+        (function () {
+            const pages = document.querySelectorAll('.page');
+            const navLinks = document.querySelectorAll('[data-link]');
+            
+            function updateNavActive(hash) {
+                const targetHash = hash || '#home';
+                navLinks.forEach(a => {
+                    a.classList.remove('nav-active');
+                    if (a.getAttribute('href') === targetHash) {
+                        a.classList.add('nav-active');
+                    }
+                });
+            }
+
+            function showPage(hash) {
+                const id = (hash || '#home').replace('#', '');
+                
+                let found = false;
+                pages.forEach(p => {
+                    if (p.id === id) {
+                        p.classList.add('active');
+                        found = true;
+                    } else {
+                        p.classList.remove('active');
+                    }
+                });
+
+                if (found) {
+                    updateNavActive(hash);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    // Fallback to home if hash is invalid
+                    showPage('#home');
+                }
+            }
+            
+            showPage(location.hash);
+            window.addEventListener('hashchange', () => showPage(location.hash));
+            
+            // Initial call to ensure navigation state is correct
+            updateNavActive(location.hash);
+        })();
+
+        /* ---- POST JSON Helper (For Formspree/Sheets) ---- */
+        async function postJSON(url, data) {
+            // Added simple exponential backoff for robustness, as required by instructions
+            const MAX_RETRIES = 3;
+            let lastError = null;
+            for (let i = 0; i < MAX_RETRIES; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    if (response.ok) return response;
+                    lastError = new Error(`Request failed with status ${response.status}`);
+                } catch (err) {
+                    lastError = err;
+                }
+                if (i < MAX_RETRIES - 1) {
+                    const delay = Math.pow(2, i) * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+            throw lastError;
+        }
+
+        /* ---- Custom Modal (Replaces alert() from Taskshift mobile.html) ---- */
+        function showModal(message, type = 'success') {
+            const modalId = 'customModal';
+            let modal = document.getElementById(modalId);
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = modalId;
+                modal.className = "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[10000] p-4";
+                modal.innerHTML = `
+                    <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full text-center transform transition-all duration-300 scale-95 opacity-0" id="modalContent">
+                        <svg class="w-12 h-12 mx-auto mb-4 text-green-500" id="modalIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <p class="text-lg mb-4 text-gray-800" id="modalMessage"></p>
+                        <button onclick="document.getElementById('${modalId}').classList.add('hidden')" class="px-4 py-2 bg-primary-blue text-white rounded-lg hover:bg-blue-700 transition duration-200">Close</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+
+            const icon = modal.querySelector('#modalIcon');
+            const content = modal.querySelector('#modalContent');
+            const messageEl = modal.querySelector('#modalMessage');
+
+            messageEl.textContent = message;
+            
+            if (type === 'error') {
+                icon.classList.remove('text-green-500');
+                icon.classList.add('text-red-500');
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>';
+            } else { // success
+                icon.classList.remove('text-red-500');
+                icon.classList.add('text-green-500');
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>';
+            }
+            
+            modal.classList.remove('hidden');
+            // Trigger transition
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        /* ---- WhatsApp Helper ---- */
+        function openWhatsApp(prefill) {
+            const url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(prefill);
+            window.open(url, '_blank');
+        }
+
+        /* ---- Form Submission Handler ---- */
+        async function handleFormSubmission(formElement, source) {
+            const name = formElement.querySelector('#name')?.value.trim() || formElement.querySelector('#cname')?.value.trim();
+            const email = formElement.querySelector('#email')?.value.trim() || formElement.querySelector('#cemail')?.value.trim();
+            const message = formElement.querySelector('#message')?.value.trim() || formElement.querySelector('#cmsg')?.value.trim();
+
+            if (!name || !email || !message) {
+                showModal('Please fill all required fields.', 'error');
+                return false;
+            }
+
+            const payload = { name, email, message, source, ts: new Date().toISOString() };
+
+            let success = false;
+
+            /* 1 — Formspree */
+            try {
+                const fd = new FormData();
+                fd.append('name', name);
+                fd.append('_replyto', email);
+                fd.append('message', message);
+                const r = await fetch(FORMSPREE_ENDPOINT, { method: 'POST', body: fd });
+                if (r.ok) { 
+                    showModal('Thank you! Your enquiry has been sent successfully.', 'success');
+                    success = true;
+                }
+            } catch (err) { console.warn('Formspree failed:', err); }
+
+            /* 2 — Google Sheet (optional) */
+            if (GOOGLE_SHEETS_WEBHOOK && !success) {
+                try {
+                    await postJSON(GOOGLE_SHEETS_WEBHOOK, payload);
+                    showModal('Enquiry saved to Google Sheet.', 'success');
+                    success = true;
+                } catch (err) { console.warn('Google Sheets failed:', err); }
+            }
+
+            /* 3 — WhatsApp fallback (always available) */
+            if (!success) {
+                openWhatsApp(`Hi, I am ${name} (Email: ${email}).\n\nProject Brief:\n${message}`);
+                showModal('Form submission failed. Opening WhatsApp chat with your details instead.', 'error');
+            }
+            
+            formElement.reset();
+            return success;
+        }
+
+        /* ---- Main Contact Form Listener ---- */
+        document.getElementById('contactForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            await handleFormSubmission(this, 'contact_page');
+        });
+
+        /* ---- Slide-out Form Functionality ---- */
+        function toggleContractSlide() {
+            const slide = document.getElementById('contractSlide');
+            slide.style.right = slide.style.right === '0px' ? '-460px' : '0px';
+        }
+
+        /* ---- Slide Enquiry Form Listener ---- */
+        document.getElementById('slideContractForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const submitted = await handleFormSubmission(this, 'slide');
+            if (submitted) {
+                toggleContractSlide();
+            }
+        });
+
+        /* ---- WhatsApp Quick Button Listener ---- */
+        document.getElementById('waBtn').addEventListener('click', function () {
+            const name = document.getElementById('cname').value.trim() || 'Client';
+            const msg = document.getElementById('cmsg').value.trim() || '';
+            const email = document.getElementById('cemail').value.trim() || 'Not Provided';
+            openWhatsApp(`Hi, I am ${name}.\n\nProject Brief:\n${msg}\n\nEmail: ${email}`);
+            document.getElementById('slideContractForm').reset();
+            toggleContractSlide();
+        });
+
+        /* ---- Escape Key Listener ---- */
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                const s = document.getElementById('contractSlide');
+                if (s.style.right === '0px') toggleContractSlide();
+            }
+        });
+    </script>
+    <script>
+let lastScrollY = window.scrollY;
+const header = document.getElementById("siteHeader");
+
+header.classList.add("header-show");
+
+window.addEventListener("scroll", () => {
+    const currentScrollY = window.scrollY;
+
+    if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        // scrolling DOWN → hide header
+        header.classList.remove("header-show");
+        header.classList.add("header-hide");
+    } else {
+        // scrolling UP → show header
+        header.classList.remove("header-hide");
+        header.classList.add("header-show");
+    }
+
+    lastScrollY = currentScrollY;
+});
+</script>
+
+</body>
+</html>
