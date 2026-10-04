@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DigiServ — Websites Built to Convert</title>
+<meta name="description" content="DigiServ builds fast, professional websites for growing businesses — from landing pages to full e-commerce platforms.">
+<link rel="icon" href="assets/digiserv-logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS — Plum & Coral (distinct from blue NexTrio theme) ============ */
+:root{
+  --ink-950:#160B2E;
+  --plum-900:#1E1030;
+  --violet-700:#6D28D9;
+  --violet-600:#7C3AED;
+  --violet-200:#E4D9FC;
+  --coral-500:#FB7185;
+  --coral-400:#FDA4AF;
+  --amber-400:#F5B14C;
+  --paper:#FFFFFF;
+  --paper-alt:#F8F5FF;
+  --line-light:#E7DEFA;
+  --slate-500:#6B5C88;
+
+  --bg:var(--paper);
+  --bg-alt:var(--paper-alt);
+  --surface:#FFFFFF;
+  --line:var(--line-light);
+  --text:#1E1030;
+  --text-dim:#584876;
+  --text-faint:#8C7CAD;
+  --accent:var(--violet-700);
+  --accent-2:var(--coral-500);
+  --shadow:0 20px 50px -25px rgba(76,29,149,.22);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden;}
+img{max-width:100%; display:block;}
+a{color:inherit; text-decoration:none;}
+h1,h2,h3,h4{font-family:'Fraunces',serif; letter-spacing:-0.01em; line-height:1.08;}
+.mono{font-family:'JetBrains Mono',monospace;}
+.wrap{max-width:1180px; margin:0 auto; padding:0 24px;}
+.eyebrow{font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent-2); display:flex; align-items:center; gap:10px; margin-bottom:16px;}
+.eyebrow::before{content:""; width:22px; height:1px; background:var(--accent-2); display:inline-block;}
+section{padding:100px 0; position:relative;}
+.section-alt{background:var(--bg-alt);}
+@media(max-width:720px){section{padding:64px 0;}}
+
+/* ============ CROP-MARK SIGNATURE ============ */
+.crop-card{position:relative;}
+.crop-card .cm-tl,.crop-card .cm-tr,.crop-card .cm-bl,.crop-card .cm-br{position:absolute; width:14px; height:14px; opacity:0; transition:opacity .25s ease;}
+.crop-card .cm-tl{top:10px; left:10px; border-top:2px solid var(--accent); border-left:2px solid var(--accent);}
+.crop-card .cm-tr{top:10px; right:10px; border-top:2px solid var(--accent); border-right:2px solid var(--accent);}
+.crop-card .cm-bl{bottom:10px; left:10px; border-bottom:2px solid var(--accent); border-left:2px solid var(--accent);}
+.crop-card .cm-br{bottom:10px; right:10px; border-bottom:2px solid var(--accent); border-right:2px solid var(--accent);}
+.crop-card:hover .cm-tl,.crop-card:hover .cm-tr,.crop-card:hover .cm-bl,.crop-card:hover .cm-br{opacity:1;}
+
+/* ============ NAV ============ */
+header{position:fixed; top:0; left:0; right:0; z-index:1000; background:color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter:blur(14px); border-bottom:1px solid var(--line);}
+.nav{display:flex; align-items:center; justify-content:space-between; padding:14px 24px; max-width:1180px; margin:0 auto;}
+.brand{display:flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-weight:600; font-size:20px;}
+.brand img{height:38px; width:38px; object-fit:contain; border-radius:8px;}
+.brand-mark{width:36px; height:36px; border-radius:9px; background:linear-gradient(135deg,var(--violet-700),var(--coral-500)); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:17px;}
+.brand span em{font-style:normal; color:var(--accent);}
+.navlinks{display:flex; gap:30px; align-items:center;}
+.navlinks a{font-size:14px; color:var(--text-dim); font-weight:500; transition:color .2s;}
+.navlinks a:hover{color:var(--text);}
+.nav-actions{display:flex; align-items:center; gap:12px;}
+.btn{display:inline-flex; align-items:center; gap:8px; padding:11px 20px; border-radius:9px; font-weight:600; font-size:14px; cursor:pointer; border:1px solid transparent; transition:transform .18s ease, box-shadow .18s ease, background .2s ease; white-space:nowrap;}
+.btn:hover{transform:translateY(-2px);}
+.btn-primary{background:linear-gradient(135deg,var(--violet-700),var(--coral-500)); color:#FFFFFF; box-shadow:0 10px 30px -12px rgba(109,40,217,.45);}
+.btn-outline{border-color:var(--line); color:var(--text); background:transparent;}
+.btn-outline:hover{border-color:var(--accent);}
+.hamburger{display:none; background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;}
+@media(max-width:900px){
+  .navlinks{position:fixed; top:66px; left:0; right:0; background:var(--bg); flex-direction:column; padding:20px 24px; border-bottom:1px solid var(--line); display:none; gap:18px;}
+  .navlinks.open{display:flex;}
+  .nav-actions .btn-outline{display:none;}
+  .hamburger{display:block;}
+}
+
+/* ============ HERO ============ */
+.hero{position:relative; padding:168px 0 110px; overflow:hidden; background:radial-gradient(60% 55% at 78% 10%, rgba(124,58,237,.14), transparent 60%), radial-gradient(45% 40% at 10% 90%, rgba(251,113,133,.12), transparent 60%), var(--bg);}
+.hero-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:60px; align-items:center;}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+.hero h1{font-size:clamp(36px,5.2vw,60px); font-weight:600;}
+.hero h1 em{font-style:italic; background:linear-gradient(120deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+.hero p.lead{margin-top:20px; font-size:18px; color:var(--text-dim); max-width:520px; line-height:1.65;}
+.hero .cta-row{display:flex; gap:14px; margin-top:34px; flex-wrap:wrap;}
+.stat-row{display:flex; gap:36px; margin-top:56px; flex-wrap:wrap;}
+.stat b{font-family:'Fraunces',serif; font-size:30px; display:block;}
+.stat span{font-size:12px; color:var(--text-faint); font-family:'JetBrains Mono',monospace; letter-spacing:.06em; text-transform:uppercase;}
+.hero-visual{position:relative; display:flex; align-items:center; justify-content:center;}
+.build-card{position:relative; width:100%; max-width:380px; aspect-ratio:1/1.05; border-radius:26px; background:linear-gradient(160deg, var(--surface), #FBFAFF); border:1px solid var(--line); box-shadow:var(--shadow); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:36px; gap:18px;}
+.build-tiles{display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%;}
+.build-tile{aspect-ratio:1; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px;}
+.build-tile:nth-child(1){background:linear-gradient(135deg,var(--violet-700),var(--violet-600));}
+.build-tile:nth-child(2){background:linear-gradient(135deg,var(--coral-500),var(--coral-400));}
+.build-tile:nth-child(3){background:linear-gradient(135deg,var(--amber-400),#F7CE8B);}
+.build-tile:nth-child(4){background:linear-gradient(135deg,#8C7CAD,var(--violet-200)); color:var(--ink-950);}
+.build-caption{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-faint); letter-spacing:.06em; text-transform:uppercase;}
+.orbit-ring{position:absolute; inset:-30px; border:1px dashed color-mix(in srgb, var(--accent) 40%, transparent); border-radius:32px; animation:spin 26s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@media (prefers-reduced-motion: reduce){.orbit-ring{animation:none;}}
+
+/* ============ SECTION HEADS ============ */
+.sec-head{max-width:640px; margin-bottom:52px;}
+.sec-head h2{font-size:clamp(28px,3.4vw,40px); font-weight:600;}
+.sec-head p{color:var(--text-dim); margin-top:14px; font-size:16px; line-height:1.65;}
+
+/* ============ ABOUT / TEAM ============ */
+.about-grid{display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start;}
+@media(max-width:860px){.about-grid{grid-template-columns:1fr;}}
+.about-copy p{color:var(--text-dim); line-height:1.75; margin-bottom:16px; font-size:15.5px;}
+.team{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+@media(max-width:720px){.team{grid-template-columns:1fr;}}
+.team-card{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:22px; text-align:left;}
+.avatar-badge{width:70px; height:70px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; overflow:hidden; border:2px solid var(--line); margin-bottom:14px;}
+.avatar-badge img{width:100%; height:100%; object-fit:cover;}
+.role-tag{font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent-2); margin-bottom:6px;}
+.team-card h4{font-size:17px; margin-bottom:8px;}
+.team-card p{font-size:14px; color:var(--text-dim); line-height:1.6;}
+
+/* ============ SERVICES ============ */
+.services-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+@media(max-width:900px){.services-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.services-grid{grid-template-columns:1fr;}}
+.svc-card{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:26px; transition:transform .2s ease, box-shadow .2s ease;}
+.svc-card:hover{transform:translateY(-4px); box-shadow:var(--shadow);}
+.svc-icon{width:46px; height:46px; border-radius:11px; background:var(--bg-alt); display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:16px;}
+.svc-card h4{font-size:17px; margin-bottom:8px;}
+.svc-card p{font-size:14px; color:var(--text-dim); line-height:1.6;}
+.svc-foot{margin-top:16px;}
+.svc-link{font-size:13px; font-weight:600; color:var(--accent);}
+
+/* ============ PORTFOLIO ============ */
+.port-filter{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:34px;}
+.chip{padding:8px 16px; border-radius:100px; border:1px solid var(--line); font-size:13px; font-weight:500; cursor:pointer; color:var(--text-dim); transition:all .2s;}
+.chip.active,.chip:hover{background:var(--accent); border-color:var(--accent); color:#fff;}
+.port-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+@media(max-width:900px){.port-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){.port-grid{grid-template-columns:1fr;}}
+.port-card{background:var(--surface); border:1px solid var(--line); border-radius:16px; overflow:hidden;}
+.port-thumb{aspect-ratio:16/10; position:relative; display:flex; align-items:center; justify-content:center; font-size:34px; color:#fff; overflow:hidden;}
+.port-thumb-fallback{position:relative; z-index:1; display:flex;}
+.port-thumb-img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:2;}
+.port-body{padding:20px;}
+.port-tag{font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--accent-2); margin-bottom:8px;}
+.port-card h4{font-size:16px; margin-bottom:8px;}
+.port-card p{font-size:13.5px; color:var(--text-dim); line-height:1.6; min-height:62px;}
+.tech-row{display:flex; gap:6px; flex-wrap:wrap; margin-top:12px;}
+.tech-pill{font-size:11px; padding:4px 9px; border-radius:100px; background:var(--bg-alt); color:var(--text-dim); border:1px solid var(--line);}
+.port-links{margin-top:14px;}
+.port-links a{font-size:13px; font-weight:600; color:var(--accent);}
+
+/* ============ PROCESS ============ */
+.process{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+@media(max-width:860px){.process{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.process{grid-template-columns:1fr;}}
+.proc-step{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:24px;}
+.proc-num{font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--accent-2); margin-bottom:10px;}
+.proc-step h4{font-size:16px; margin-bottom:8px;}
+.proc-step p{font-size:13.5px; color:var(--text-dim); line-height:1.6;}
+
+/* ============ CTA BAND ============ */
+.cta-band{background:linear-gradient(135deg,var(--violet-700),var(--coral-500)); border-radius:26px; padding:56px; text-align:center; color:#fff;}
+.cta-band h2{color:#fff; font-size:clamp(26px,3.4vw,36px);}
+.cta-band p{color:rgba(255,255,255,.88); margin-top:12px; max-width:520px; margin-inline:auto;}
+.cta-band .cta-row{justify-content:center; margin-top:26px;}
+.cta-band .btn-outline{border-color:rgba(255,255,255,.5); color:#fff;}
+.cta-band .btn-primary{background:#fff; color:var(--violet-700);}
+
+/* ============ CONTACT ============ */
+.contact-grid{display:grid; grid-template-columns:.8fr 1.2fr; gap:50px;}
+@media(max-width:860px){.contact-grid{grid-template-columns:1fr;}}
+.info-card{display:flex; gap:14px; align-items:flex-start; padding:16px 0; border-bottom:1px solid var(--line);}
+.info-card:last-child{border-bottom:none;}
+.info-ic{width:40px; height:40px; border-radius:10px; background:var(--bg-alt); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;}
+.info-card h5{font-size:14px; margin-bottom:4px;}
+.info-card a,.info-card p{font-size:13.5px; color:var(--text-dim);}
+.enquiry{background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:28px;}
+.form-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+@media(max-width:520px){.form-row{grid-template-columns:1fr;}}
+.field{margin-bottom:14px;}
+.field label{font-size:12.5px; font-weight:600; display:block; margin-bottom:6px;}
+.field input,.field textarea,.field select{width:100%; padding:11px 13px; border-radius:9px; border:1px solid var(--line); background:var(--bg-alt); font-family:inherit; font-size:14px; color:var(--text);}
+.field textarea{min-height:100px; resize:vertical;}
+.consent{display:flex; gap:8px; font-size:12.5px; color:var(--text-dim); margin-bottom:16px; align-items:flex-start;}
+.form-status{margin-top:12px; font-size:13px;}
+.form-status.ok{color:#15803D;}
+.form-status.err{color:#DC2626;}
+.newsletter-band{background:var(--bg-alt); border:1px solid var(--line); border-radius:18px; padding:24px 28px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;}
+.newsletter-band form{display:flex; gap:10px; flex-wrap:wrap;}
+.newsletter-band input{padding:11px 13px; border-radius:9px; border:1px solid var(--line); min-width:220px;}
+
+/* ============ FOOTER ============ */
+footer{background:var(--ink-950); color:#D8CFF0; padding:70px 0 24px;}
+.foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px;}
+@media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.foot-grid{grid-template-columns:1fr;}}
+.foot-brand{display:flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-weight:600; font-size:18px; color:#fff; margin-bottom:14px;}
+footer p{font-size:13.5px; line-height:1.7; color:#B4A6D6;}
+footer h5{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:#fff; margin-bottom:16px;}
+footer .foot-grid > div > a{display:block; font-size:13.5px; color:#B4A6D6; margin-bottom:10px;}
+.foot-social{display:flex; gap:10px; margin-top:16px;}
+.foot-social a{width:34px; height:34px; border-radius:9px; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; font-size:14px; color:#fff;}
+.foot-bottom{margin-top:50px; padding-top:24px; border-top:1px solid rgba(255,255,255,.1); display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:12.5px; color:#8A7BB0;}
+
+/* ============ FLOATING WIDGETS ============ */
+.whatsapp-float{position:fixed; bottom:24px; right:24px; width:56px; height:56px; border-radius:50%; background:#25D366; color:#fff; display:flex; align-items:center; justify-content:center; font-size:26px; box-shadow:0 10px 26px -8px rgba(0,0,0,.35); z-index:900;}
+.chat-widget{position:fixed; bottom:92px; right:24px; width:280px; background:var(--surface); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); display:none; flex-direction:column; z-index:900;}
+.chat-widget.open{display:flex;}
+.chat-head{background:linear-gradient(135deg,var(--violet-700),var(--coral-500)); color:#fff; padding:14px 16px; border-radius:16px 16px 0 0; font-weight:600; font-size:14px;}
+.chat-body{padding:16px; font-size:13.5px; color:var(--text-dim); line-height:1.6;}
+.chat-body .btn{margin-top:12px; width:100%; justify-content:center;}
+.cookie-banner{position:fixed; bottom:0; left:0; right:0; background:var(--ink-950); color:#D8CFF0; padding:16px 24px; display:none; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; z-index:950;}
+.cookie-banner.show{display:flex;}
+.cookie-banner p{font-size:13px; max-width:640px;}
+.cookie-actions{display:flex; gap:10px;}
+.cookie-banner .btn-outline{border-color:rgba(255,255,255,.3); color:#fff;}
+
+
+.brand img{
+  height:52px;
+  width:52px;
+  object-fit:cover;
+  border-radius:50%;
+}
+
+
+.foot-logo{
+  height:48px;
+  width:48px;
+  object-fit:cover;
+  border-radius:50%;
+}
+
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="#" class="brand">
+      <img src="Digiserv2.jpeg" alt="DigiServ logo">
+      <span>Digi<em>Serv</em></span>
+    </a>
+    <nav class="navlinks" id="navlinks">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#process">Process</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="#contact" class="btn btn-outline">Get a Quote</a>
+      <a href="#contact" class="btn btn-primary">Book a Call</a>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Web Development Agency</div>
+      <h1>Websites built to <em>load fast</em> and <em>win customers</em>.</h1>
+      <p class="lead">DigiServ designs and develops fast, professional websites for growing businesses — from landing pages to full e-commerce platforms — with a live preview before you pay a rupee.</p>
+      <div class="cta-row">
+        <a href="#contact" class="btn btn-primary">Start Your Project →</a>
+        <a href="#portfolio" class="btn btn-outline">See Our Work</a>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><b>8+</b><span>Live Projects Shipped</span></div>
+        <div class="stat"><b>100%</b><span>Mobile Responsive</span></div>
+        <div class="stat"><b>24h</b><span>Avg. First Reply</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="orbit-ring"></div>
+      <div class="build-card">
+        <img src="Digiserv2.jpeg" alt="DigiServ logo mark" style="width:100%; max-width:280px;">
+        <div class="build-caption">Design · Build · Launch · Support</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT / TEAM ================= -->
+<section id="about" class="section-alt">
+  <div class="wrap about-grid">
+    <div class="about-copy">
+      <div class="eyebrow">About DigiServ</div>
+      <h2>A small studio, built for businesses that need to move fast</h2>
+      <p>DigiServ is a website development studio that takes a project from first call to live site — landing pages, full business websites, e-commerce stores and portfolios, all built responsive and SEO-ready from day one.</p>
+      <p>You get a live preview link before final payment, straight talk about timelines and cost, and support that doesn't disappear after launch.</p>
+    </div>
+    <div>
+      <div class="eyebrow" style="margin-top:0;">Meet the Team</div>
+      <div class="team">
+        <div class="team-card">
+          <div class="avatar-badge"><img src="we design.jpg" alt="Design Lead"></div>
+          <div class="role-tag">Design Lead</div>
+          <h4>We Design</h4>
+          <p>Layouts, typography and colour systems shaped around each client's industry and customer.</p>
+        </div>
+        <div class="team-card">
+          <div class="avatar-badge"><img src="Complete-Guide-to-Web-Development-and-Design.jpg" alt="Development Lead"></div>
+          <div class="role-tag">Development Lead</div>
+          <h4>We Develop</h4>
+          <p>Fast, responsive sites in HTML, React, JavaScript and modern CSS.</p>
+        </div>
+        <div class="team-card">
+          <div class="avatar-badge"><img src="which-web-design-platform-is-right-for-you-5e4d59fb941b9.webp" alt="Delivery Lead"></div>
+          <div class="role-tag">Delivery Lead</div>
+          <h4>We Deliver</h4>
+          <p>Launch, SEO setup, analytics and handover — so the site keeps working after go-live.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Services</div>
+      <h2>Every type of website your business could need</h2>
+      <p>Fixed starting prices, clear scope, and a live preview before final payment.</p>
+    </div>
+    <div class="services-grid"><!-- injected --></div>
+  </div>
+</section>
+
+<!-- ================= PORTFOLIO ================= -->
+<section id="portfolio" class="section-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Portfolio</div>
+      <h2>Recent live builds</h2>
+      <p>A selection of real, deployed projects across fitness, healthcare, beauty, dining, real estate, education and personal portfolios. Every link below is a live site.</p>
+    </div>
+    <div class="port-filter" id="portFilter">
+      <span class="chip active" data-filter="all">All</span>
+      <span class="chip" data-filter="Fitness">Fitness</span>
+      <span class="chip" data-filter="Healthcare">Healthcare</span>
+      <span class="chip" data-filter="Beauty">Beauty</span>
+      <span class="chip" data-filter="Dining">Dining</span>
+      <span class="chip" data-filter="Real Estate">Real Estate</span>
+      <span class="chip" data-filter="Education">Education</span>
+      <span class="chip" data-filter="Portfolio">Personal Portfolio</span>
+    </div>
+    <div class="port-grid" id="portGrid"><!-- injected --></div>
+  </div>
+</section>
+
+<!-- ================= PROCESS ================= -->
+<section id="process">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">How We Work</div>
+      <h2>From enquiry to launch</h2>
+    </div>
+    <div class="process">
+      <div class="proc-step"><div class="proc-num">01</div><h4>Discovery Call</h4><p>We understand your business, customers and goals — free, no obligation.</p></div>
+      <div class="proc-step"><div class="proc-num">02</div><h4>Design</h4><p>A custom layout and colour direction built for your brand and industry.</p></div>
+      <div class="proc-step"><div class="proc-num">03</div><h4>Development</h4><p>Fast, responsive, SEO-ready code — you review a live preview link.</p></div>
+      <div class="proc-step"><div class="proc-num">04</div><h4>Launch &amp; Support</h4><p>We deploy, connect your domain, and stay on for ongoing maintenance.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA BAND ================= -->
+<section>
+  <div class="wrap">
+    <div class="cta-band">
+      <h2>Ready to build your website?</h2>
+      <p>Book a free consultation and get a live preview link — before you pay a rupee.</p>
+      <div class="cta-row">
+        <a href="#contact" class="btn btn-primary">Book Free Consultation</a>
+        <a href="https://wa.me/910000000000" target="_blank" class="btn btn-outline">Chat on WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Contact</div>
+      <h2>Tell us about your project or book a free consultation</h2>
+      <p>One form, two purposes — send a project enquiry or request a free consultation call. Our team replies within 24 hours, and every submission is saved straight to our Google Sheet.</p>
+    </div>
+    <div class="contact-grid">
+      <div>
+        <div class="info-card">
+          <div class="info-ic">📍</div>
+          <div><h5>Address</h5><p>Kolkata , West Bengal , India</p></div>
+        </div>
+        <div class="info-card">
+          <div class="info-ic">💬</div>
+          <div><h5>WhatsApp</h5><a href="https://wa.me/919832729066" target="_blank">9832729066</a></div>
+        </div>
+        <div class="info-card">
+          <div class="info-ic">✉️</div>
+          <div><h5>Email</h5><a href="mailto:enquirydigiserv@gmail.com">enquirydigiserv@gmail.com</a></div>
+        </div>
+        <div class="info-card">
+          <div class="info-ic">📘</div>
+          <div><h5>MSME</h5><a href="#" target="_blank">Registered Freelancer</a></div>
+        </div>
+      </div>
+      <form class="enquiry" id="enquiryForm">
+        <div class="form-row">
+          <div class="field"><label for="f-name">Full Name *</label><input id="f-name" name="name" type="text" required placeholder="Your name"></div>
+          <div class="field"><label for="f-email">Email *</label><input id="f-email" name="email" type="email" required placeholder="you@email.com"></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="f-phone">Phone *</label><input id="f-phone" name="phone" type="tel" required placeholder="+91"></div>
+          <div class="field"><label for="f-business">Business Name</label><input id="f-business" name="business" type="text" placeholder="Optional"></div>
+        </div>
+        <div class="field"><label for="f-message">Message *</label><textarea id="f-message" name="message" required placeholder="Tell us what you need..."></textarea></div>
+        <label class="consent"><input type="checkbox" required style="margin-top:2px;"> I agree to be contacted about my enquiry.</label>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Submit Enquiry / Book Consultation →</button>
+        <div class="form-status" id="formStatus"></div>
+      </form>
+    </div>
+
+    <div class="newsletter-band" style="margin-top:60px;">
+      <div>
+        <h4 style="font-size:18px;">Get web &amp; SEO tips in your inbox</h4>
+        <p style="font-size:13.5px; color:var(--text-dim); margin-top:6px;">One useful email a month. No spam.</p>
+      </div>
+      <form id="newsletterForm">
+        <input type="email" name="email" required placeholder="you@email.com">
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+      <div class="form-status" id="newsletterStatus" style="width:100%;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand"><img src="Digiserv2.jpeg" alt="DigiServ logo" style="height:34px; width:34px; border-radius:8px; object-fit:cover;">DigiServ</div>
+        <p>We Design. We Develop. We Deliver. A studio building professional websites for growing businesses.</p>
+        <div class="foot-social">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="https://wa.me/919832729066" target="_blank" aria-label="WhatsApp">w</a>
+          <a href="mailto:enquirydigiserv@gmail.com" aria-label="Email">@</a>
+        </div>
+      </div>
+      <div>
+        <h5>Quick Links</h5>
+        <a href="#about">About Us</a>
+        <a href="#services">Services</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#process">Process</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div>
+        <h5>Services</h5>
+        <a href="#services">Website Development</a>
+        <a href="#services">E-commerce</a>
+        <a href="#services">SEO</a>
+        <a href="#services">UI/UX Design</a>
+        <a href="#services">Website Maintenance</a>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <p>Kolkata , West Bengal , India</p>
+        <a href="tel:+919832729066">9832729066</a>
+        <a href="mailto:enquirydigiserv@gmail.com">enquirydigiserv@gmail.com</a>
+        <a>MSME registered freelancer</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> DigiServ. All rights reserved.</span>
+      <div style="display:flex; gap:18px;">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= FLOATING WIDGETS ================= -->
+<a href="https://wa.me/919832729066" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">☎</a>
+
+<div class="chat-widget" id="chatWidget">
+  <div class="chat-head">DigiServ Live Chat</div>
+  <div class="chat-body">
+    👋 Hi! Have a question about building your website? Message us directly and we'll reply fast.
+    <a href="https://wa.me/919832729066" target="_blank" class="btn btn-primary">Start Chat on WhatsApp</a>
+  </div>
+</div>
+
+<div class="cookie-banner" id="cookieBanner">
+  <p>We use cookies to improve your experience and analyse site traffic. By continuing, you agree to our use of cookies.</p>
+  <div class="cookie-actions">
+    <button class="btn btn-outline" id="cookieDecline">Decline</button>
+    <button class="btn btn-primary" id="cookieAccept">Accept</button>
+  </div>
+</div>
+
+<script>
+/* ============ CONFIG — connected to the SAME Google Sheet used by NexTrio ============ */
+const GOOGLE_SHEET_ENQUIRY_URL = "https://script.google.com/macros/s/AKfycbzaOb7-R_EkkiFZ7jnv94Z-ED_3gWeTgr1KNHNqSzjv4BtdMWzJXhhPA_-qpy-5BHSK/exec";
+const GOOGLE_SHEET_NEWSLETTER_URL = "https://script.google.com/macros/s/AKfycbz0e4kh8sRbr7RgOPlsnBBEgQVj2mVtNzOzkreaZAGY_i1kGI4SK1IVoDw7E288snA/exec";
+
+/* ============ YEAR ============ */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ============ MOBILE NAV ============ */
+const hamburger = document.getElementById('hamburger');
+const navlinks = document.getElementById('navlinks');
+hamburger.addEventListener('click', ()=> navlinks.classList.toggle('open'));
+navlinks.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>navlinks.classList.remove('open')));
+
+/* ============ SERVICES DATA ============ */
+const services = [
+  {icon:"🌐", name:"Website Development", desc:"Full custom-built business websites, fast and mobile-ready."},
+  {icon:"🎯", name:"Landing Pages", desc:"High-converting single-page sites for campaigns and launches."},
+  {icon:"🏢", name:"Business Websites", desc:"Multi-page sites for established companies and service providers."},
+  {icon:"🛒", name:"E-commerce", desc:"Full online stores with cart, payments and inventory."},
+  {icon:"🧑‍💼", name:"Portfolio Website", desc:"Personal or agency portfolios that showcase your best work."},
+  {icon:"🎓", name:"School Website", desc:"Admission forms, faculty pages, notices and event galleries."},
+  {icon:"🍽️", name:"Restaurant Website", desc:"Menus, table reservations and location details, built to convert."},
+  {icon:"📈", name:"SEO", desc:"On-page optimisation, speed tuning and local search setup."},
+  {icon:"🛠️", name:"Website Maintenance", desc:"Updates, backups, uptime monitoring and small fixes."},
+  {icon:"🎨", name:"UI/UX Design", desc:"Wireframes and visual design systems before a line of code."},
+];
+const svcGrid = document.querySelector('.services-grid');
+svcGrid.innerHTML = services.map(s=>`
+  <div class="svc-card">
+    <div class="svc-icon">${s.icon}</div>
+    <h4>${s.name}</h4>
+    <p>${s.desc}</p>
+    <div class="svc-foot">
+      <a href="#contact" class="svc-link">Enquire →</a>
+    </div>
+  </div>
+`).join('');
+
+/* ============ PORTFOLIO DATA (live projects) ============ */
+const projects = [
+  {cat:"Fitness", icon:"🏋️", name:"FitZone Gym", industry:"Fitness & Wellness", tech:["HTML","CSS","JS"], desc:"Membership gym site with class schedules, coach profiles and tiered pricing plans.", url:"https://positive-gray-fb53np0l.edgeone.app/", cover:"Screenshot 2026-07-04 121303.png"},
+  {cat:"Healthcare", icon:"🩺", name:"Dr. Arora & Associates", industry:"Healthcare / Clinic", tech:["HTML","CSS","JS","API"], desc:"Multi-specialty clinic site with live appointment slots, department booking and patient testimonials.", url:"https://doctor7.edgeone.app/", cover:"Screenshot 2026-07-04 121827.png"},
+  {cat:"Beauty", icon:"💇", name:"Lumière Hair & Beauty", industry:"Beauty & Lifestyle", tech:["React","CSS","UI Design"], desc:"Salon booking experience with service menus, stylist profiles and appointment scheduling.", url:"https://saloon.edgeone.app/", cover:"Screenshot 2026-07-04 121844.png"},
+  {cat:"Dining", icon:"🍽️", name:"Ember & Oak", industry:"Food & Fine Dining", tech:["HTML","CSS","JS"], desc:"Fine-dining restaurant site with a full wood-fire menu, chef's specials and table reservations.", url:"https://restruent.edgeone.app/", cover:"Screenshot 2026-07-04 121923.png"},
+  {cat:"Real Estate", icon:"🏙️", name:"Aurum Estates", industry:"Luxury Real Estate", tech:["React","JS","CSS"], desc:"Property listing platform with location/budget filters and a curated luxury listings grid.", url:"https://realestate7.edgeone.app/", cover:"Screenshot 2026-07-04 121954.png"},
+  {cat:"Education", icon:"🎓", name:"StudySetu", industry:"Career & College Guidance", tech:["HTML","CSS","JS"], desc:"College counseling platform with course comparisons, college listings and dual WhatsApp counselor lines.", url:"https://studysetu1.edgeone.dev/", cover:"Screenshot 2026-07-04 122009.png"},
+  
+];
+const portGrid = document.getElementById('portGrid');
+function renderPortfolio(filter){
+  const list = filter === 'all' ? projects : projects.filter(p=>p.cat === filter);
+  portGrid.innerHTML = list.map(p=>`
+    <div class="port-card crop-card">
+      <span class="cm-tl"></span><span class="cm-tr"></span><span class="cm-bl"></span><span class="cm-br"></span>
+      <div class="port-thumb" style="background:linear-gradient(135deg, var(--violet-700), var(--coral-500));">
+        <span class="port-thumb-fallback">${p.icon}</span>
+        ${p.cover ? `<img src="${p.cover}" alt="${p.name} cover screenshot" class="port-thumb-img" onerror="this.style.display='none'; this.previousElementSibling.style.display='flex';">` : ''}
+      </div>
+      <div class="port-body">
+        <div class="port-tag">${p.industry}</div>
+        <h4>${p.name}</h4>
+        <p>${p.desc}</p>
+        <div class="tech-row">${p.tech.map(t=>`<span class="tech-pill">${t}</span>`).join('')}</div>
+        <div class="port-links">
+          <a href="${p.url}" target="_blank">Live Preview ↗</a>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+renderPortfolio('all');
+document.getElementById('portFilter').addEventListener('click', (e)=>{
+  if(!e.target.classList.contains('chip')) return;
+  document.querySelectorAll('#portFilter .chip').forEach(c=>c.classList.remove('active'));
+  e.target.classList.add('active');
+  renderPortfolio(e.target.dataset.filter);
+});
+
+/* ============ ENQUIRY FORM -> GOOGLE SHEET #1 ============ */
+const enquiryForm = document.getElementById('enquiryForm');
+const formStatus = document.getElementById('formStatus');
+enquiryForm.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(enquiryForm).entries());
+  data.timestamp = new Date().toISOString();
+  data.source = "DigiServ Website - Enquiry Form";
+
+  formStatus.className = "form-status";
+  formStatus.textContent = "Sending...";
+  try{
+    await fetch(GOOGLE_SHEET_ENQUIRY_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {"Content-Type":"text/plain;charset=utf-8"},
+      body: JSON.stringify(data)
+    });
+    formStatus.className = "form-status ok";
+    formStatus.textContent = "Thank you! Your enquiry has been sent — we'll reply within 24 hours.";
+    enquiryForm.reset();
+  }catch(err){
+    formStatus.className = "form-status err";
+    formStatus.textContent = "Something went wrong. Please try WhatsApp instead.";
+  }
+});
+
+/* ============ NEWSLETTER FORM -> GOOGLE SHEET #2 ============ */
+const newsletterForm = document.getElementById('newsletterForm');
+const newsletterStatus = document.getElementById('newsletterStatus');
+newsletterForm.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(newsletterForm).entries());
+  data.timestamp = new Date().toISOString();
+  data.source = "DigiServ Website - Newsletter";
+
+  newsletterStatus.className = "form-status";
+  newsletterStatus.textContent = "Subscribing...";
+  try{
+    await fetch(GOOGLE_SHEET_NEWSLETTER_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {"Content-Type":"text/plain;charset=utf-8"},
+      body: JSON.stringify(data)
+    });
+    newsletterStatus.className = "form-status ok";
+    newsletterStatus.textContent = "Thanks for subscribing!";
+    newsletterForm.reset();
+  }catch(err){
+    newsletterStatus.className = "form-status err";
+    newsletterStatus.textContent = "Something went wrong. Please try again.";
+  }
+});
+
+/* ============ WHATSAPP CHAT WIDGET ============ */
+const chatWidget = document.getElementById('chatWidget');
+document.querySelector('.whatsapp-float').addEventListener('mouseenter', ()=> chatWidget.classList.add('open'));
+document.addEventListener('click', (e)=>{
+  if(!chatWidget.contains(e.target) && !e.target.closest('.whatsapp-float')) chatWidget.classList.remove('open');
+});
+
+/* ============ COOKIE BANNER ============ */
+const cookieBanner = document.getElementById('cookieBanner');
+if(!localStorage.getItem('digiserv-cookie-consent')){
+  setTimeout(()=> cookieBanner.classList.add('show'), 800);
+}
+document.getElementById('cookieAccept').addEventListener('click', ()=>{
+  localStorage.setItem('digiserv-cookie-consent','accepted');
+  cookieBanner.classList.remove('show');
+});
+document.getElementById('cookieDecline').addEventListener('click', ()=>{
+  localStorage.setItem('digiserv-cookie-consent','declined');
+  cookieBanner.classList.remove('show');
+});
+</script>
+</body>
+</html>
