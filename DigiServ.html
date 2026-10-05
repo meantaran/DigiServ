@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DigiServ — Websites Built to Convert</title>
 <meta name="description" content="DigiServ builds fast, professional websites for growing businesses — from landing pages to full e-commerce platforms.">
-<link rel="icon" href="assets/digiserv-logo.jpg">
+<link rel="icon" href="logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -62,10 +62,13 @@ section{padding:100px 0; position:relative;}
 /* ============ NAV ============ */
 header{position:fixed; top:0; left:0; right:0; z-index:1000; background:color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter:blur(14px); border-bottom:1px solid var(--line);}
 .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 24px; max-width:1180px; margin:0 auto;}
-.brand{display:flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-weight:600; font-size:20px;}
-.brand img{height:38px; width:38px; object-fit:contain; border-radius:8px;}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none;}
+.brand-logo{height:40px; width:40px; object-fit:cover; border-radius:10px; box-shadow:0 3px 12px -2px rgba(109,40,217,.25); transition:transform .2s ease;}
+.brand:hover .brand-logo{transform:scale(1.05);}
+.brand-name{height:30px; width:120px; object-fit:cover; object-position:center; mix-blend-mode:multiply; display:block;}
+.brand-text{font-family:'Fraunces',serif; font-weight:600; font-size:22px; color:var(--text); letter-spacing:-0.01em;}
+.brand-text em, .brand span em{font-style:normal; background:linear-gradient(135deg, var(--violet-600) 0%, #C026D3 50%, var(--coral-500) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
 .brand-mark{width:36px; height:36px; border-radius:9px; background:linear-gradient(135deg,var(--violet-700),var(--coral-500)); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:17px;}
-.brand span em{font-style:normal; color:var(--accent);}
 .navlinks{display:flex; gap:30px; align-items:center;}
 .navlinks a{font-size:14px; color:var(--text-dim); font-weight:500; transition:color .2s;}
 .navlinks a:hover{color:var(--text);}
@@ -224,20 +227,16 @@ footer .foot-grid > div > a{display:block; font-size:13.5px; color:#B4A6D6; marg
 .cookie-banner .btn-outline{border-color:rgba(255,255,255,.3); color:#fff;}
 
 
-.brand img{
-  height:52px;
-  width:52px;
-  object-fit:cover;
-  border-radius:50%;
-}
+/* Hero Brand Showcase */
+.hero-brand-card{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; width:100%;}
+.hero-logo-img{width:150px; height:150px; border-radius:26px; object-fit:cover; box-shadow:0 18px 38px -10px rgba(109,40,217,.32), 0 0 0 1px rgba(231,222,250,.9); transition:transform .35s ease, box-shadow .35s ease;}
+.hero-brand-card:hover .hero-logo-img{transform:translateY(-4px) scale(1.03); box-shadow:0 24px 44px -8px rgba(109,40,217,.42), 0 0 0 1px var(--violet-200);}
+.hero-name-img{width:200px; height:52px; object-fit:cover; object-position:center; mix-blend-mode:multiply; transition:transform .3s ease;}
 
-
-.foot-logo{
-  height:48px;
-  width:48px;
-  object-fit:cover;
-  border-radius:50%;
-}
+/* Footer Brand */
+.foot-brand{display:flex; align-items:center; gap:12px; font-family:'Fraunces',serif; font-weight:600; font-size:22px; color:#fff; margin-bottom:14px;}
+.foot-logo-img{height:38px; width:38px; border-radius:10px; object-fit:cover; box-shadow:0 4px 14px rgba(0,0,0,.45);}
+.foot-brand em{font-style:normal; background:linear-gradient(135deg, #C084FC 0%, #F472B6 50%, #FB7185 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
 
 
 </style>
@@ -246,9 +245,10 @@ footer .foot-grid > div > a{display:block; font-size:13.5px; color:#B4A6D6; marg
 
 <header>
   <div class="nav">
-    <a href="#" class="brand">
-      <img src="Digiserv2.jpeg" alt="DigiServ logo">
-      <span>Digi<em>Serv</em></span>
+    <a href="#" class="brand" aria-label="DigiServ Home">
+      <img src="logo.jpg" alt="DigiServ logo" class="brand-logo">
+      <img src="name.jpg" alt="DigiServ" class="brand-name" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+      <span class="brand-text" style="display:none;">Digi<em>Serv</em></span>
     </a>
     <nav class="navlinks" id="navlinks">
       <a href="#about">About</a>
@@ -285,7 +285,10 @@ footer .foot-grid > div > a{display:block; font-size:13.5px; color:#B4A6D6; marg
     <div class="hero-visual">
       <div class="orbit-ring"></div>
       <div class="build-card">
-        <img src="Digiserv2.jpeg" alt="DigiServ logo mark" style="width:100%; max-width:280px;">
+        <div class="hero-brand-card">
+          <img src="logo.jpg" alt="DigiServ logo mark" class="hero-logo-img">
+          <img src="name.jpg" alt="DigiServ" class="hero-name-img">
+        </div>
         <div class="build-caption">Design · Build · Launch · Support</div>
       </div>
     </div>
@@ -453,7 +456,10 @@ footer .foot-grid > div > a{display:block; font-size:13.5px; color:#B4A6D6; marg
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <div class="foot-brand"><img src="Digiserv2.jpeg" alt="DigiServ logo" style="height:34px; width:34px; border-radius:8px; object-fit:cover;">DigiServ</div>
+        <div class="foot-brand">
+          <img src="logo.jpg" alt="DigiServ logo" class="foot-logo-img">
+          <span>Digi<em>Serv</em></span>
+        </div>
         <p>We Design. We Develop. We Deliver. A studio building professional websites for growing businesses.</p>
         <div class="foot-social">
           <a href="#" aria-label="Facebook">f</a>
